@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C37150513F82B5E004B8958 /* TPMultiLayoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C37150413F82B5E004B8958 /* TPMultiLayoutViewController.m */; };
 		4C41456D13F810C9005332D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C41456C13F810C9005332D6 /* UIKit.framework */; };
 		4C41456F13F810C9005332D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C41456E13F810C9005332D6 /* Foundation.framework */; };
 		4C41457113F810C9005332D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C41457013F810C9005332D6 /* CoreGraphics.framework */; };
@@ -19,18 +20,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C37150313F82B5E004B8958 /* TPMultiLayoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPMultiLayoutViewController.h; sourceTree = "<group>"; };
+		4C37150413F82B5E004B8958 /* TPMultiLayoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPMultiLayoutViewController.m; sourceTree = "<group>"; };
 		4C41456813F810C9005332D6 /* TPMultiLayoutViewControllerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TPMultiLayoutViewControllerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C41456C13F810C9005332D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4C41456E13F810C9005332D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4C41457013F810C9005332D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		4C41457413F810CA005332D6 /* TPMultiLayoutViewControllerTest-Info.plist */ = {isa = PBXFileReference; path = "TPMultiLayoutViewControllerTest-Info.plist"; sourceTree = "<group>"; };
+		4C41457413F810CA005332D6 /* TPMultiLayoutViewControllerTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TPMultiLayoutViewControllerTest-Info.plist"; sourceTree = "<group>"; };
 		4C41457613F810CA005332D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4C41457813F810CA005332D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4C41457A13F810CA005332D6 /* TPMultiLayoutViewControllerTest-Prefix.pch */ = {isa = PBXFileReference; path = "TPMultiLayoutViewControllerTest-Prefix.pch"; sourceTree = "<group>"; };
-		4C41457B13F810CA005332D6 /* TPMultiLayoutViewControllerTestAppDelegate.h */ = {isa = PBXFileReference; path = TPMultiLayoutViewControllerTestAppDelegate.h; sourceTree = "<group>"; };
+		4C41457A13F810CA005332D6 /* TPMultiLayoutViewControllerTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TPMultiLayoutViewControllerTest-Prefix.pch"; sourceTree = "<group>"; };
+		4C41457B13F810CA005332D6 /* TPMultiLayoutViewControllerTestAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPMultiLayoutViewControllerTestAppDelegate.h; sourceTree = "<group>"; };
 		4C41457C13F810CA005332D6 /* TPMultiLayoutViewControllerTestAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPMultiLayoutViewControllerTestAppDelegate.m; sourceTree = "<group>"; };
 		4C41457F13F810CA005332D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		4C41458113F810CA005332D6 /* TPMultiLayoutViewControllerTestViewController.h */ = {isa = PBXFileReference; path = TPMultiLayoutViewControllerTestViewController.h; sourceTree = "<group>"; };
+		4C41458113F810CA005332D6 /* TPMultiLayoutViewControllerTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPMultiLayoutViewControllerTestViewController.h; sourceTree = "<group>"; };
 		4C41458213F810CA005332D6 /* TPMultiLayoutViewControllerTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPMultiLayoutViewControllerTestViewController.m; sourceTree = "<group>"; };
 		4C41458513F810CA005332D6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TPMultiLayoutViewControllerTestViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,6 +55,8 @@
 		4C41455D13F810C9005332D6 = {
 			isa = PBXGroup;
 			children = (
+				4C37150313F82B5E004B8958 /* TPMultiLayoutViewController.h */,
+				4C37150413F82B5E004B8958 /* TPMultiLayoutViewController.m */,
 				4C41457213F810C9005332D6 /* TPMultiLayoutViewControllerTest */,
 				4C41456B13F810C9005332D6 /* Frameworks */,
 				4C41456913F810C9005332D6 /* Products */,
@@ -164,6 +169,7 @@
 				4C41457913F810CA005332D6 /* main.m in Sources */,
 				4C41457D13F810CA005332D6 /* TPMultiLayoutViewControllerTestAppDelegate.m in Sources */,
 				4C41458313F810CA005332D6 /* TPMultiLayoutViewControllerTestViewController.m in Sources */,
+				4C37150513F82B5E004B8958 /* TPMultiLayoutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +287,7 @@
 				4C41458B13F810CA005332D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

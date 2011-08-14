@@ -3,12 +3,13 @@
 //  TPMultiLayoutViewControllerTest
 //
 //  Created by Michael Tyson on 14/08/2011.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 A Tasty Pixel. All rights reserved.
 //
 
 #import "TPMultiLayoutViewControllerTestViewController.h"
 
 @implementation TPMultiLayoutViewControllerTestViewController
+@synthesize sliderLabel;
 
 - (void)didReceiveMemoryWarning
 {
@@ -30,6 +31,7 @@
 
 - (void)viewDidUnload
 {
+    [self setSliderLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -38,7 +40,16 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+- (void)dealloc {
+    [sliderLabel release];
+    [super dealloc];
+}
+
+- (IBAction)updateSliderLabel:(id)sender {
+    sliderLabel.text = [NSString stringWithFormat:@"%g", ((UISlider*)sender).value];
 }
 
 @end
