@@ -7,15 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TPMultiLayoutViewController : UIViewController {
-    UIView *portraitView;
-    UIView *landscapeView;
-    
-    @private
-    NSDictionary *portraitAttributes;
-    NSDictionary *landscapeAttributes;
-    BOOL viewIsCurrentlyPortrait;
-}
+@interface TPMultiLayoutViewController : UIViewController
 
 // Call directly to use with custom animation (override willRotateToInterfaceOrientation to disable the switch there)
 - (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation;

@@ -17,10 +17,14 @@
 - (NSDictionary*)attributesForView:(UIView*)view;
 - (void)applyAttributes:(NSDictionary*)attributes toView:(UIView*)view;
 - (BOOL)shouldDescendIntoSubviewsOfView:(UIView*)view;
+
+@property (nonatomic, strong) NSDictionary *portraitAttributes;
+@property (nonatomic, strong) NSDictionary *landscapeAttributes;
+@property (nonatomic, assign) BOOL viewIsCurrentlyPortrait;
+
 @end
 
 @implementation TPMultiLayoutViewController
-@synthesize portraitView, landscapeView;
 
 #pragma mark - View lifecycle
 
@@ -28,9 +32,9 @@
     [super viewDidLoad];
     
     // Construct attribute tables
-    portraitAttributes = [[self attributeTableForViewHierarchy:portraitView associateWithViewHierarchy:self.view] retain];
-    landscapeAttributes = [[self attributeTableForViewHierarchy:landscapeView associateWithViewHierarchy:self.view] retain];
-    viewIsCurrentlyPortrait = (self.view == portraitView);
+    self.portraitAttributes = [self attributeTableForViewHierarchy:self.portraitView associateWithViewHierarchy:self.view];
+    self.landscapeAttributes = [self attributeTableForViewHierarchy:self.landscapeView associateWithViewHierarchy:self.view];
+    self.viewIsCurrentlyPortrait = (self.view == self.portraitView);
     
     // Don't need to retain the original template view hierarchies any more
     self.portraitView = nil;
@@ -39,26 +43,15 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    
-    [portraitAttributes release];
-    portraitAttributes = nil;
-    [landscapeAttributes release];
-    landscapeAttributes = nil;
-}
-
-- (void)dealloc {
-    [portraitAttributes release];
-    portraitAttributes = nil;
-    [landscapeAttributes release];
-    landscapeAttributes = nil;
-    
-    [super dealloc];
+   
+    self.portraitAttributes = nil;
+    self.landscapeAttributes = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     // Display correct layout for orientation
-    if ( (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && !viewIsCurrentlyPortrait) ||
-         (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && viewIsCurrentlyPortrait) ) {
+    if ( (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && !self.viewIsCurrentlyPortrait) ||
+         (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && self.viewIsCurrentlyPortrait) ) {
         [self applyLayoutForInterfaceOrientation:self.interfaceOrientation];
     }
 }
@@ -66,14 +59,14 @@
 #pragma mark - Rotation
 
 - (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
-    NSDictionary *table = UIInterfaceOrientationIsPortrait(newOrientation) ? portraitAttributes : landscapeAttributes;
+    NSDictionary *table = UIInterfaceOrientationIsPortrait(newOrientation) ? self.portraitAttributes : self.landscapeAttributes;
     [self applyAttributeTable:table toViewHierarchy:self.view];
-    viewIsCurrentlyPortrait = UIInterfaceOrientationIsPortrait(newOrientation);
+    self.viewIsCurrentlyPortrait = UIInterfaceOrientationIsPortrait(newOrientation);
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if ( (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !viewIsCurrentlyPortrait) ||
-         (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && viewIsCurrentlyPortrait) ) {
+    if ( (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !self.viewIsCurrentlyPortrait) ||
+         (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && self.viewIsCurrentlyPortrait) ) {
         [self applyLayoutForInterfaceOrientation:toInterfaceOrientation];
     }
 }
@@ -87,7 +80,7 @@
 }
 
 - (void)addAttributesForSubviewHierarchy:(UIView*)view associatedWithSubviewHierarchy:(UIView*)associatedView toTable:(NSMutableDictionary*)table {
-    [table setObject:[self attributesForView:view] forKey:[NSValue valueWithPointer:associatedView]];
+    [table setObject:[self attributesForView:view] forKey:[NSValue valueWithPointer:(__bridge const void *)(associatedView)]];
     
     if ( ![self shouldDescendIntoSubviewsOfView:view] ) return;
     
@@ -117,7 +110,7 @@
                 UIControlEvents controlEvents = [(UIControl*)otherView allControlEvents];
                 for ( id target in [(UIControl*)otherView allTargets] ) {
                     // Iterate over each bit in the UIControlEvents bitfield
-                    for ( NSInteger i=0; i<sizeof(UIControlEvents)*8; i++ ) {
+                    for ( NSInteger i=0; i<(NSInteger)sizeof(UIControlEvents)*8; i++ ) {
                         UIControlEvents event = 1 << i;
                         if ( !(controlEvents & event) ) continue;
                         if ( ![[(UIControl*)otherView actionsForTarget:target forControlEvent:event] isEqualToArray:[(UIControl*)view actionsForTarget:target forControlEvent:event]] ) {
@@ -187,7 +180,7 @@
 }
 
 - (void)applyAttributeTable:(NSDictionary*)table toViewHierarchy:(UIView*)view {
-    NSDictionary *attributes = [table objectForKey:[NSValue valueWithPointer:view]];
+    NSDictionary *attributes = [table objectForKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     if ( attributes ) {
         [self applyAttributes:attributes toView:view];
     }
