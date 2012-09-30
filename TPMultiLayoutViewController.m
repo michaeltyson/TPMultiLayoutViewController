@@ -6,6 +6,7 @@
 //
 
 #import "TPMultiLayoutViewController.h"
+#import "HorizontalPicker.h"
 
 #define VERBOSE_MATCH_FAIL 1 // Comment this out to be less verbose when associated views can't be found
 
@@ -24,9 +25,37 @@
 
 @end
 
+static NSMutableSet* sViewClassesToIgnore = nil;
+
 @implementation TPMultiLayoutViewController
 
 #pragma mark - View lifecycle
+
++(void)registerViewClassToIgnore:(Class)viewClass
+{
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sViewClassesToIgnore = [[NSMutableSet alloc] init];
+	});
+	
+	[sViewClassesToIgnore addObject:viewClass];
+}
+
++(void)initialize
+{
+	[self registerViewClassToIgnore:[UISlider class]];
+	[self registerViewClassToIgnore:[UISwitch class]];
+	[self registerViewClassToIgnore:[UITextField class]];
+	[self registerViewClassToIgnore:[UIWebView class]];
+	[self registerViewClassToIgnore:[UITableView class]];
+	[self registerViewClassToIgnore:[UIPickerView class]];
+	[self registerViewClassToIgnore:[UIDatePicker class]];
+	[self registerViewClassToIgnore:[UITextView class]];
+	[self registerViewClassToIgnore:[UIProgressView class]];
+	[self registerViewClassToIgnore:[UISegmentedControl class]];
+
+	[super initialize];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -213,16 +242,7 @@
 }
 
 - (BOOL)shouldDescendIntoSubviewsOfView:(UIView*)view {
-    if ( [view isKindOfClass:[UISlider class]] ||
-         [view isKindOfClass:[UISwitch class]] ||
-         [view isKindOfClass:[UITextField class]] ||
-         [view isKindOfClass:[UIWebView class]] ||
-         [view isKindOfClass:[UITableView class]] ||
-         [view isKindOfClass:[UIPickerView class]] ||
-         [view isKindOfClass:[UIDatePicker class]] ||
-         [view isKindOfClass:[UITextView class]] ||
-         [view isKindOfClass:[UIProgressView class]] ||
-         [view isKindOfClass:[UISegmentedControl class]] ) return NO;
+    if ([sViewClassesToIgnore containsObject:[view class]]) return NO;
     return YES;
 }
 
