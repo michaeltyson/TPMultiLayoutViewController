@@ -6,7 +6,6 @@
 //
 
 #import "TPMultiLayoutViewController.h"
-#import "HorizontalPicker.h"
 
 #define VERBOSE_MATCH_FAIL 1 // Comment this out to be less verbose when associated views can't be found
 
