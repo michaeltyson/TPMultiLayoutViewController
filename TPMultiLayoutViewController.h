@@ -10,7 +10,7 @@
 @interface TPMultiLayoutViewController : UIViewController
 
 // Call directly to use with custom animation (override willRotateToInterfaceOrientation to disable the switch there)
-- (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation;
+- (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation duration:(NSTimeInterval)duration;
 
 // Call this with the class of custom views you do not wish TPMultiLayoutViewController to descend into.
 +(void)registerViewClassToIgnore:(Class)viewClass;

@@ -13,9 +13,9 @@
 - (NSDictionary*)attributeTableForViewHierarchy:(UIView*)rootView associateWithViewHierarchy:(UIView*)associatedRootView;
 - (void)addAttributesForSubviewHierarchy:(UIView*)view associatedWithSubviewHierarchy:(UIView*)associatedView toTable:(NSMutableDictionary*)table;
 - (UIView*)findAssociatedViewForView:(UIView*)view amongViews:(NSArray*)views;
-- (void)applyAttributeTable:(NSDictionary*)table toViewHierarchy:(UIView*)view;
+- (void)applyAttributeTable:(NSDictionary*)table toViewHierarchy:(UIView*)view duration:(NSTimeInterval)duration;
 - (NSDictionary*)attributesForView:(UIView*)view;
-- (void)applyAttributes:(NSDictionary*)attributes toView:(UIView*)view;
+- (void)applyAttributes:(NSDictionary*)attributes toView:(UIView*)view duration:(NSTimeInterval)duration;
 - (BOOL)shouldDescendIntoSubviewsOfView:(UIView*)view;
 
 @property (nonatomic, strong) NSDictionary *portraitAttributes;
@@ -80,22 +80,22 @@ static NSMutableSet* sViewClassesToIgnore = nil;
     // Display correct layout for orientation
     if ( (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && !self.viewIsCurrentlyPortrait) ||
          (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && self.viewIsCurrentlyPortrait) ) {
-        [self applyLayoutForInterfaceOrientation:self.interfaceOrientation];
+        [self applyLayoutForInterfaceOrientation:self.interfaceOrientation duration:0];
     }
 }
 
 #pragma mark - Rotation
 
-- (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
+- (void)applyLayoutForInterfaceOrientation:(UIInterfaceOrientation)newOrientation duration:(NSTimeInterval)duration {
     NSDictionary *table = UIInterfaceOrientationIsPortrait(newOrientation) ? self.portraitAttributes : self.landscapeAttributes;
-    [self applyAttributeTable:table toViewHierarchy:self.view];
+    [self applyAttributeTable:table toViewHierarchy:self.view duration:duration];
     self.viewIsCurrentlyPortrait = UIInterfaceOrientationIsPortrait(newOrientation);
 }
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     if ( (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) && !self.viewIsCurrentlyPortrait) ||
          (UIInterfaceOrientationIsLandscape(toInterfaceOrientation) && self.viewIsCurrentlyPortrait) ) {
-        [self applyLayoutForInterfaceOrientation:toInterfaceOrientation];
+        [self applyLayoutForInterfaceOrientation:toInterfaceOrientation duration:duration];
     }
 }
 
@@ -126,7 +126,7 @@ static NSMutableSet* sViewClassesToIgnore = nil;
 }
 
 - (UIView*)findAssociatedViewForView:(UIView*)view amongViews:(NSArray*)views {
-    // First try to match tag
+	// First try to match tag
     if ( view.tag != 0 ) {
         UIView *associatedView = [[views filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag = %d", view.tag]] lastObject];
         if ( associatedView ) return associatedView;
@@ -212,10 +212,10 @@ static NSMutableSet* sViewClassesToIgnore = nil;
     return nil;
 }
 
-- (void)applyAttributeTable:(NSDictionary*)table toViewHierarchy:(UIView*)view {
+- (void)applyAttributeTable:(NSDictionary*)table toViewHierarchy:(UIView*)view duration:(NSTimeInterval)duration {
     NSDictionary *attributes = [table objectForKey:[NSValue valueWithPointer:(__bridge const void *)(view)]];
     if ( attributes ) {
-        [self applyAttributes:attributes toView:view];
+        [self applyAttributes:attributes toView:view duration:duration];
     }
     
     if ( view.hidden ) return;
@@ -223,7 +223,7 @@ static NSMutableSet* sViewClassesToIgnore = nil;
     if ( ![self shouldDescendIntoSubviewsOfView:view] ) return;
     
     for ( UIView *subview in view.subviews ) {
-        [self applyAttributeTable:table toViewHierarchy:subview];
+        [self applyAttributeTable:table toViewHierarchy:subview duration:duration];
     }
 }
 
@@ -238,11 +238,14 @@ static NSMutableSet* sViewClassesToIgnore = nil;
     return attributes;
 }
 
-- (void)applyAttributes:(NSDictionary*)attributes toView:(UIView*)view {
-    view.frame = [[attributes objectForKey:@"frame"] CGRectValue];
-    view.bounds = [[attributes objectForKey:@"bounds"] CGRectValue];
-    view.hidden = [[attributes objectForKey:@"hidden"] boolValue];
-    view.autoresizingMask = [[attributes objectForKey:@"autoresizingMask"] integerValue];
+- (void)applyAttributes:(NSDictionary*)attributes toView:(UIView*)view duration:(NSTimeInterval)duration {
+	[UIView animateWithDuration:duration
+					 animations:^{
+						 view.frame = [[attributes objectForKey:@"frame"] CGRectValue];
+						 view.bounds = [[attributes objectForKey:@"bounds"] CGRectValue];
+						 view.hidden = [[attributes objectForKey:@"hidden"] boolValue];
+						 view.autoresizingMask = [[attributes objectForKey:@"autoresizingMask"] integerValue];
+					 }];
 }
 
 - (BOOL)shouldDescendIntoSubviewsOfView:(UIView*)view {
