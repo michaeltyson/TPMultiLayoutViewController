@@ -108,6 +108,11 @@ static NSMutableSet* sViewClassesToIgnore = nil;
 }
 
 - (void)addAttributesForSubviewHierarchy:(UIView*)view associatedWithSubviewHierarchy:(UIView*)associatedView toTable:(NSMutableDictionary*)table {
+	// Ignore views with negative tag
+	if ( view.tag < 0 ) {
+		return;
+	}
+
     [table setObject:[self attributesForView:view] forKey:[NSValue valueWithPointer:(__bridge const void *)(associatedView)]];
     
     if ( ![self shouldDescendIntoSubviewsOfView:view] ) return;
