@@ -63,17 +63,6 @@ static NSMutableSet* sViewClassesToIgnore = nil;
     self.portraitAttributes = [self attributeTableForViewHierarchy:self.portraitView associateWithViewHierarchy:self.view];
     self.landscapeAttributes = [self attributeTableForViewHierarchy:self.landscapeView associateWithViewHierarchy:self.view];
     self.viewIsCurrentlyPortrait = (self.view == self.portraitView);
-    
-    // Don't need to retain the original template view hierarchies any more
-    self.portraitView = nil;
-    self.landscapeView = nil;
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-   
-    self.portraitAttributes = nil;
-    self.landscapeAttributes = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
