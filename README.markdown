@@ -47,6 +47,12 @@ rearrange the view, using the layout we extracted from our original two views.
     4. Title (for UILabel)
     5. Text or placeholder (for UITextField)
     6. Class
+- If you wish a view to be ignored by TPMultiLayoutViewController, assign it a negative tag.
+- You can register view classes TPMultiLayoutViewController should not descend into by calling
+
+	[TPMultiLayoutViewContoller registerViewClassToIgnore:*yourclass*];
+	
+	A good place to do this is in your class' -(void)initialize method.
     
   If you experience odd behaviour, check the log for "Couldn't find match..." messages.  If a view cannot be matched to its counterpart, try setting the same tag for both views.
 
